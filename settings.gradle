@@ -1,2 +1,0 @@
-include ':app'
-rootProject.name='TI2.2-CSD-LocationAware'
