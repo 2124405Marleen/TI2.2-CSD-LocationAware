@@ -9,7 +9,7 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button buttonToMap;
+    private Button buttonToMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

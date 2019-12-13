@@ -3,4 +3,5 @@
     <string name="title_activity_maps">Map</string>
     <string name="mainViewName">Statistics</string>
     <string name="buttonMap">Map</string>
+    <string name="buttonStatistics">Statistics</string>
 </resources>

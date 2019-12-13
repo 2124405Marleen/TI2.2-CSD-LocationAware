@@ -2,7 +2,10 @@ package nl.lorenzostolk.ti22_csd_locationaware;
 
 import androidx.fragment.app.FragmentActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -20,6 +23,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private ArrayList<Place> avansBuildings;
     private ArrayList<Place> drinkPlaces;
+    private Button buttonToStatistics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +36,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         avansBuildings = new ArrayList<>();
         initPlaces();
+        initStatistics();
+    }
+
+    private void initStatistics() {
+        buttonToStatistics = findViewById(R.id.map_button_toStatistics);
+        buttonToStatistics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MapsActivity.this, MainActivity.class));
+            }
+        });
     }
 
 
