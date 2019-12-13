@@ -8,4 +8,25 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="header" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">32sp</item>
+        <item name="android:fontFamily">@font/amaranth</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:padding">5dp</item>
+    </style>
+
+    <style name="subHeader" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">28sp</item>
+        <item name="android:fontFamily">@font/amaranth</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:padding">5dp</item>
+    </style>
+
+    <style name="normalText" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">11sp</item>
+        <item name="android:fontFamily">@font/amaranth</item>
+        <item name="android:textColor">@color/colorNormalText</item>
+    </style>
+
+
 </resources>
