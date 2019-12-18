@@ -47,7 +47,7 @@ public class WhenWhere implements Serializable {
     public int getTotalSecondsSpendDuringStay() {
         return totalSecondsSpendDuringStay;
     }
-    
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public String getTimeSpend() {
