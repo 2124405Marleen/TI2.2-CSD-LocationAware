@@ -12,6 +12,7 @@ public class WhenWhere implements Serializable {
     private LocationEnum location;
     private LocalDateTime arrival;
     private LocalDateTime departure;
+    private int totalSecondsSpendDuringStay;
 
     public WhenWhere(LocationEnum location, LocalDateTime arrival, LocalDateTime departure) {
         this.location = location;
@@ -42,6 +43,11 @@ public class WhenWhere implements Serializable {
     public void setDeparture(LocalDateTime departure) {
         this.departure = departure;
     }
+
+    public int getTotalSecondsSpendDuringStay() {
+        return totalSecondsSpendDuringStay;
+    }
+    
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public String getTimeSpend() {
@@ -78,6 +84,8 @@ public class WhenWhere implements Serializable {
                     + (departure.getMinute()*60) + departure.getSecond());
             totalSecondsSpend = secondesTillMidnightArrival + secondesAfterMidnightTillDeparture;
         }
+
+        this.totalSecondsSpendDuringStay = totalSecondsSpend;
         //Omrekenen voor de tekstuitvoer
         int secondsWhoDidnotFitInHours = totalSecondsSpend % 3600;
         int hoursSpend = (totalSecondsSpend - secondsWhoDidnotFitInHours) / 3600;
