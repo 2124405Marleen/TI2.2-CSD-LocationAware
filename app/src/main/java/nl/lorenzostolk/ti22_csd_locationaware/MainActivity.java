@@ -9,7 +9,7 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
-    //AVANS SCHOOL TIME INVESTMENT
+    //AVANS SCHOOL TIME INVESTMENT by Lorenzo en Marleen 2019
 
     private Button buttonToMap;
 
