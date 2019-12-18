@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
-
+    //AVANS SCHOOL TIME INVESTMENT
     private GoogleMap mMap;
     private ArrayList<Place> avansBuildings;
     private ArrayList<Place> drinkPlaces;

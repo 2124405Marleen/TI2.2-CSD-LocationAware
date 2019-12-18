@@ -3,6 +3,7 @@ package nl.lorenzostolk.ti22_csd_locationaware;
 import com.google.android.gms.maps.model.LatLng;
 
 public class Place {
+    //AVANS SCHOOL TIME INVESTMENT
     private String name;
     private LatLng latLng;
     private String imageURL;

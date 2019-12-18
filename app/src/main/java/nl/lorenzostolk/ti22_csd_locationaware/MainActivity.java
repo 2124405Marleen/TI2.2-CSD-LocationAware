@@ -9,6 +9,8 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
+    //AVANS SCHOOL TIME INVESTMENT
+
     private Button buttonToMap;
 
     @Override
