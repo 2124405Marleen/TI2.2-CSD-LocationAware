@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">TI2.2-CSD-LocationAware</string>
     <string name="buttonMap">Map</string>
     <string name="buttonStatistics">Statistieken</string>
     <string name="mainViewName">Statistieken</string>
+    <string name="TableNameLocation">Locatie</string>
+    <string name="TableNameTime">Doorgebrachte tijd</string>
 </resources>

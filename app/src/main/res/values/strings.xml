@@ -4,4 +4,9 @@
     <string name="mainViewName">Statistics</string>
     <string name="buttonMap">Map</string>
     <string name="buttonStatistics">Statistics</string>
+    <string name="locationLovensdijkstraat" translatable="false">Lovensdijkstraat</string>
+    <string name="locationHogesschoollaan" translatable="false">Hogeschoolstraat</string>
+    <string name="TableNameLocation">Location</string>
+    <string name="TableNameTime">Time Spend</string>
+
 </resources>

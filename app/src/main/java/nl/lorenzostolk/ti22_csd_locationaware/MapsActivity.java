@@ -37,7 +37,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         avansBuildings = new ArrayList<>();
         initPlaces();
         initStatistics();
+
     }
+
 
     private void initStatistics() {
         buttonToStatistics = findViewById(R.id.map_button_toStatistics);
@@ -111,6 +113,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
     }
+
+
 
 
 }
