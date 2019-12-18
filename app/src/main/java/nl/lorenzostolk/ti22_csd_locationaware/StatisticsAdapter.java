@@ -1,11 +1,13 @@
 package nl.lorenzostolk.ti22_csd_locationaware;
 
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -26,6 +28,7 @@ public class StatisticsAdapter extends RecyclerView.Adapter<StatisticsAdapter.St
         return new StatisticsViewHolder(view);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onBindViewHolder(@NonNull StatisticsViewHolder holder, int position) {
         holder.locationTextView.setText(whenWhereList.get(position).getLocation().toString());

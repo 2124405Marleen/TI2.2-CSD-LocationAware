@@ -1,15 +1,18 @@
 package nl.lorenzostolk.ti22_csd_locationaware;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 import java.lang.reflect.Array;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -21,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private StatisticsAdapter statisticsAdapter;
     private ArrayList<WhenWhere> whenWhereList;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,11 +51,13 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(statisticsAdapter);
 
     }
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void initTestDataForRecyclerView() {
         whenWhereList = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            whenWhereList.add(new WhenWhere(LocationEnum.HOGESCHOOLLAAN, 10.0));
-            whenWhereList.add(new WhenWhere(LocationEnum.LOVENSDIJKSTRAAT, 10.0));
+            whenWhereList.add(new WhenWhere(LocationEnum.LOVENSDIJKSTRAAT, LocalDateTime.of(2019, 12, 18, 10, 35, 07),
+                    LocalDateTime.of(2019, 12, 20, 13, 00, 00)));
+            whenWhereList.add(new WhenWhere(LocationEnum.HOGESCHOOLLAAN, LocalDateTime.now(), LocalDateTime.now()));
         }
     }
 }
