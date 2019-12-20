@@ -18,10 +18,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".WeekOverview"></activity>
-        <activity android:name=".activity_item_statistics" />
-        <activity android:name=".DetailStatistics" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".View.WeekOverview"/>
+        <activity android:name=".View.MainActivity"/>
+        <activity android:name=".View.ItemStatistics" />
+        <activity android:name=".View.ItemStatisticsActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
