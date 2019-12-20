@@ -19,6 +19,10 @@ public class WhenWhere implements Serializable {
         this.arrival = arrival;
         this.departure = departure;
     }
+    //TODO: delete volgende constructor na testen
+    public WhenWhere(LocationEnum lo){
+        this.location = lo;
+    }
 
     public LocationEnum getLocation() {
         return location;

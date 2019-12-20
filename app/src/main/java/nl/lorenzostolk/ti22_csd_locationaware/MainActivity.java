@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private Button buttonToMap;
     private RecyclerView recyclerView;
     private StatisticsAdapter statisticsAdapter;
-    private ArrayList<WhenWhere> whenWhereList;
+    private ArrayList<WorkingWeek> weeks;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -47,17 +47,17 @@ public class MainActivity extends AppCompatActivity {
     public void initRecyclerView(){
         recyclerView = findViewById(R.id.StatisticRecyclerview);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 1, GridLayoutManager.VERTICAL, false));
-        statisticsAdapter = new StatisticsAdapter(whenWhereList);
+        statisticsAdapter = new StatisticsAdapter(weeks);
         recyclerView.setAdapter(statisticsAdapter);
 
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void initTestDataForRecyclerView() {
-        whenWhereList = new ArrayList<>();
+        ArrayList<WhenWhere> whenWhers = new ArrayList();
+        whenWhers.add(new WhenWhere(LocationEnum.LOVENSDIJKSTRAAT));
+        weeks = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            whenWhereList.add(new WhenWhere(LocationEnum.LOVENSDIJKSTRAAT, LocalDateTime.of(2019, 12, 18, 10, 35, 07),
-                    LocalDateTime.of(2019, 12, 20, 13, 00, 00)));
-            whenWhereList.add(new WhenWhere(LocationEnum.HOGESCHOOLLAAN, LocalDateTime.now(), LocalDateTime.now()));
+            weeks.add(new WorkingWeek(1, 12, whenWhers, 2019));
         }
     }
 }

@@ -1,6 +1,8 @@
 package nl.lorenzostolk.ti22_csd_locationaware;
 
+import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +16,10 @@ import java.util.ArrayList;
 
 public class StatisticsAdapter extends RecyclerView.Adapter<StatisticsAdapter.StatisticsViewHolder> {
 
-    private ArrayList<WhenWhere> whenWhereList;
-    public StatisticsAdapter(ArrayList<WhenWhere> whenWhereList){
-        this.whenWhereList = whenWhereList;
+    private ArrayList<WorkingWeek> weeks;
+
+    public StatisticsAdapter(ArrayList<WorkingWeek> weeks){
+        this.weeks = weeks;
     }
 
     @NonNull
@@ -31,23 +34,37 @@ public class StatisticsAdapter extends RecyclerView.Adapter<StatisticsAdapter.St
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onBindViewHolder(@NonNull StatisticsViewHolder holder, int position) {
-        holder.locationTextView.setText(whenWhereList.get(position).getLocation().toString());
-        holder.timeTextView.setText(String.valueOf(whenWhereList.get(position).getTimeSpend()));
+        holder.textHours.setText(String.valueOf(weeks.get(position).getTotalSeconds()));
+        holder.textYear.setText(String.valueOf(weeks.get(position).getYear()));
+        holder.textWeekNumber.setText(String.valueOf(weeks.get(position).getWeekNumber()));
     }
 
     @Override
     public int getItemCount() {
-        return this.whenWhereList.size();
+        return this.weeks.size();
     }
 
     public class StatisticsViewHolder extends RecyclerView.ViewHolder {
-        private TextView locationTextView;
-        private TextView timeTextView;
+        private TextView textHours;
+        private TextView textWeekNumber;
+        private TextView textYear;
 
-        public StatisticsViewHolder(@NonNull View itemView) {
+        public StatisticsViewHolder(@NonNull final View itemView) {
             super(itemView);
-            timeTextView = itemView.findViewById(R.id.Detail_time_text);
-            locationTextView = itemView.findViewById(R.id.Detail_location_text);
+            textHours = itemView.findViewById(R.id.Statistic_overview_text_hours);
+            textWeekNumber = itemView.findViewById(R.id.Statistic_overview_text_weeknumber);
+            textYear = itemView.findViewById(R.id.Statistic_overview_textyear);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), WeekOverview.class);
+                    Log.i("DETAILHOURS", "" + StatisticsViewHolder.super.getAdapterPosition());
+                    WorkingWeek workingWeek = weeks.get(StatisticsViewHolder.super.getAdapterPosition());
+                    intent.putExtra("WEEK", workingWeek);
+                    itemView.getContext().startActivity(intent);
+                }
+            });
         }
     }
 }
