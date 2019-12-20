@@ -8,5 +8,8 @@
     <string name="locationHogesschoollaan" translatable="false">Hogeschoolstraat</string>
     <string name="TableNameLocation">Location</string>
     <string name="TableNameTime">Time Spend</string>
+    <string name="YearTitle">year</string>
+    <string name="hoursTotalTitle">hours</string>
+    <string name="WeekNumberTitle">week</string>
 
 </resources>

@@ -54,7 +54,9 @@ public class MainActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void initTestDataForRecyclerView() {
         ArrayList<WhenWhere> whenWhers = new ArrayList();
-        whenWhers.add(new WhenWhere(LocationEnum.LOVENSDIJKSTRAAT));
+        whenWhers.add(new WhenWhere(LocationEnum.LOVENSDIJKSTRAAT,
+                LocalDateTime.of(2019, 12, 12, 10, 11, 00),
+                LocalDateTime.of(2019, 12, 13, 12, 11, 11)));
         weeks = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             weeks.add(new WorkingWeek(1, 12, whenWhers, 2019));

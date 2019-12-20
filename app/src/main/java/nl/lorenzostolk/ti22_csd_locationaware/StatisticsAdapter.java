@@ -44,6 +44,7 @@ public class StatisticsAdapter extends RecyclerView.Adapter<StatisticsAdapter.St
         return this.weeks.size();
     }
 
+
     public class StatisticsViewHolder extends RecyclerView.ViewHolder {
         private TextView textHours;
         private TextView textWeekNumber;
