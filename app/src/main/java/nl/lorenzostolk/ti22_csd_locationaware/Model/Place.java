@@ -1,4 +1,4 @@
-package nl.lorenzostolk.ti22_csd_locationaware;
+package nl.lorenzostolk.ti22_csd_locationaware.Model;
 
 import com.google.android.gms.maps.model.LatLng;
 
