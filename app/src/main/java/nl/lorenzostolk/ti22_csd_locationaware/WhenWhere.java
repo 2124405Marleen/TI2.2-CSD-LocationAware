@@ -20,6 +20,12 @@ public class WhenWhere implements Serializable {
         this.departure = departure;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public String getTimeArrivalAndDeparture(){
+        return arrival.getDayOfMonth() + "-" + arrival.getMonthValue() + " " + arrival.toLocalTime()
+                + " - " + departure.getDayOfMonth() + "-" + departure.getMonthValue() + " " + departure.toLocalTime();
+    }
+
     public LocationEnum getLocation() {
         return location;
     }

@@ -35,6 +35,7 @@ public class WeekAdapter extends RecyclerView.Adapter<WeekAdapter.WeekViewHolder
         WhenWhere whenWhere = whenWhereList.get(position);
         holder.textLocation.setText(whenWhere.getTimeSpend());
         holder.textTime.setText(String.valueOf(whenWhere.getLocation()));
+        holder.textArrivalAndDeparture.setText(whenWhere.getTimeArrivalAndDeparture());
 
     }
 
@@ -47,12 +48,14 @@ public class WeekAdapter extends RecyclerView.Adapter<WeekAdapter.WeekViewHolder
 
         private TextView textTime;
         private TextView textLocation;
+        private TextView textArrivalAndDeparture;
 
         public WeekViewHolder(@NonNull View itemView) {
             super(itemView);
 
             this.textTime = itemView.findViewById(R.id.Detail_time_text);
             this.textLocation = itemView.findViewById(Detail_location_text);
+            this.textArrivalAndDeparture = itemView.findViewById(R.id.Detail_text_timesArrDep);
 
         }
     }
