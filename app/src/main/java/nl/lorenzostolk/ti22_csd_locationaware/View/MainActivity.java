@@ -5,12 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import nl.lorenzostolk.ti22_csd_locationaware.Model.LocationEnum;
+import nl.lorenzostolk.ti22_csd_locationaware.Model.SPB;
 import nl.lorenzostolk.ti22_csd_locationaware.R;
 import nl.lorenzostolk.ti22_csd_locationaware.Controller.StatisticsAdapter;
 import nl.lorenzostolk.ti22_csd_locationaware.Model.WhenWhere;
 import nl.lorenzostolk.ti22_csd_locationaware.Model.WorkingWeek;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -27,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private StatisticsAdapter statisticsAdapter;
     private ArrayList<WorkingWeek> weeks;
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override

@@ -6,8 +6,11 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import nl.lorenzostolk.ti22_csd_locationaware.Controller.MapsDirectionsApiListener;
 import nl.lorenzostolk.ti22_csd_locationaware.Controller.MapsDirectionsApiManager;
+import nl.lorenzostolk.ti22_csd_locationaware.Model.NoContextAvailableException;
 import nl.lorenzostolk.ti22_csd_locationaware.Model.Place;
 import nl.lorenzostolk.ti22_csd_locationaware.Model.Route;
+import nl.lorenzostolk.ti22_csd_locationaware.Model.SPB;
+import nl.lorenzostolk.ti22_csd_locationaware.Model.SQLB;
 import nl.lorenzostolk.ti22_csd_locationaware.R;
 
 import android.Manifest;
@@ -45,7 +48,7 @@ import java.util.List;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, MapsDirectionsApiListener {
     //AVANS SCHOOL TIME INVESTMENT by Lorenzo en Marleen 2019
     private GoogleMap mMap;
-    private ArrayList<Place> avansBuildings;
+    private List<Place> avansBuildings;
     private ArrayList<Place> drinkPlaces;
     private Button buttonToStatistics;
     private Button buttonToDirection;
@@ -66,7 +69,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     LocationManager locationManager;
     LocationListener locationListener;
 
-//    private Location initLastlocation;
+    //    private Location initLastlocation;
     private LatLng currentLatLng;
     private Marker mCurrLocation;
     private MapsDirectionsApiManager MDAM;
@@ -74,6 +77,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private List<Route> routes;
     private Polyline polyline;
     private Route currentRoute;
+    private SQLB sqlb;
 
 //    @Override
 //    public void onProviderEnabled(String provider) {
@@ -99,7 +103,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         Toast.makeText(this, "Loading Map", Toast.LENGTH_SHORT).show();
 
-
+        sqlb = SQLB.getInstance(this);
         setupLocationServices();
         getPermissions();
         initStatistics();
@@ -109,6 +113,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 this,
                 getApplicationContext()
         );
+
+        //SharedPreferences test
+        SPB.initPreferences(this);
+        try {
+            SPB spb = SPB.getInstance();
+            spb.safePlaces(avansBuildings);
+        } catch (NoContextAvailableException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -169,7 +182,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onLocationChanged(Location location) {
 
                 updateLocationMarker(location);
-                if(polyline != null) {
+                if (polyline != null) {
                     updateRouteUI();
                 }
 
@@ -221,7 +234,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         buttonToDirection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MDAM.getDirectionRoutes(currentLatLng, new LatLng(51.590270,4.764140));
+                MDAM.getDirectionRoutes(currentLatLng, new LatLng(51.590270, 4.764140));
 //                Toast.makeText(MapsActivity.this,"MDAM",Toast.LENGTH_SHORT).show();
             }
         });
@@ -258,8 +271,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     getPermissions();
                 }
 
-
-                if(locationManager.getLastKnownLocation(LOCATION_PROVIDER) ==  null){
+                if (locationManager.getLastKnownLocation(LOCATION_PROVIDER) == null) {
                     Toast.makeText(MapsActivity.this, "Last known location is unknown", Toast.LENGTH_SHORT).show();
                 } else {
 //                    Toast.makeText(MapsActivity.this, "LOCATION_PROVIDER is: " + LOCATION_PROVIDER, Toast.LENGTH_SHORT).show();
@@ -279,11 +291,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    private void trackLocation(){
+    private void trackLocation() {
         mMap.setMyLocationEnabled(true);
     }
 
-    private void mMapSettings(){
+    private void mMapSettings() {
         mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(51.585281, 4.794852)));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(51.585281, 4.794852), 15.5f));
         mMap.getUiSettings().setZoomControlsEnabled(false);
@@ -294,7 +306,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void initPlaces() {
-        Collections.addAll(avansBuildings,
+        List<Place> avansBuildingsToSQLite = new ArrayList<>();
+        Collections.addAll(avansBuildingsToSQLite,
                 new Place("Avans H", new LatLng(51.584018, 4.797174),
                         "https://punt.avans.nl/wp-content/uploads/2016/08/HogeschoollaanBreda-1920.jpg",
                         "Hogeschoollaan main building. "),
@@ -316,13 +329,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         "https://gebouwen.avans.nl/binaries/content/gallery/iavans/thematic.gebouwen/lovensdijkstraat/3711_web.jpg",
                         "Lovensdijk D building. ")
         );
+
+        for (Place p : avansBuildingsToSQLite) {
+            sqlb.addOrUpdatePlace(p);
+        }
     }
 
     private void addMarkers() {
-
-        for (Place p : avansBuildings
-        ) {
+        avansBuildings = sqlb.getAllPlaces();
+        for (Place p : avansBuildings) {
+            Log.d("-------------Places", p.toString());
             mMap.addMarker(new MarkerOptions().position(p.getLatLng()).title(p.getDescription()));
+//            System.out.println("SQLite: ID= " + p.getID() + " |name= " + p.getName() + " |latlng= " + p.getLatLng());
         }
 
     }
@@ -331,10 +349,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onRoutesAvailable(List<Route> routes) {
 //        System.out.println("Route Json: " + route.getJsonRoute());
-        Toast.makeText(MapsActivity.this, "Routes Received" , Toast.LENGTH_SHORT).show();
+        Toast.makeText(MapsActivity.this, "Routes Received", Toast.LENGTH_SHORT).show();
 
-        LatLng origin = new LatLng(51.589320,4.774480);
-        LatLng destination = new LatLng(51.590270,4.764140);
+        LatLng origin = new LatLng(51.589320, 4.774480);
+        LatLng destination = new LatLng(51.590270, 4.764140);
 //        LatLng dest = markerPoints.get(1);
 
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
@@ -346,7 +364,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setRouteUI();
     }
 
-    private void setRouteUI(){
+    private void setRouteUI() {
         PolylineOptions lineOptions = new PolylineOptions();
 
         LatLng northEast = routes.get(0).getRouteLatsLngs().get(0);
@@ -354,7 +372,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // The first list contained the bounds of the route and is not part of the route:
         routes.remove(0);
 
-        for (Route leg: routes) {
+        for (Route leg : routes) {
             lineOptions.addAll(leg.getRouteLatsLngs());
         }
 
@@ -365,7 +383,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Drawing polyline in the Google Map for the i-th route
         if (lineOptions != null) {
-            if(polyline != null){
+            if (polyline != null) {
                 polyline.remove();
 //                lineOptions.color(Color.RED);
                 polyline = this.mMap.addPolyline(lineOptions);
@@ -391,7 +409,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng northEast = routes.get(0).getRouteLatsLngs().get(0);
         LatLng southWest = routes.get(0).getRouteLatsLngs().get(1);
 
-        for (Route leg: routes) {
+        for (Route leg : routes) {
             lineOptions.addAll(leg.getRouteLatsLngs());
         }
 
@@ -402,7 +420,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Drawing polyline in the Google Map for the i-th route
         if (lineOptions != null) {
-            if(polyline != null){
+            if (polyline != null) {
                 polyline.remove();
                 polyline = this.mMap.addPolyline(lineOptions);
             } else {
