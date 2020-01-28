@@ -52,6 +52,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ArrayList<Place> drinkPlaces;
     private Button buttonToStatistics;
     private Button buttonToDirection;
+    private Button buttonToInfo;
 
     //Request code
     final int REQUEST_CODE = 123;
@@ -224,6 +225,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void initStatistics() {
         buttonToStatistics = findViewById(R.id.map_button_toStatistics);
         buttonToDirection = findViewById(R.id.btnToDirection);
+        buttonToInfo = findViewById(R.id.btnToInfo);
 
         buttonToStatistics.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -238,6 +240,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //                Toast.makeText(MapsActivity.this,"MDAM",Toast.LENGTH_SHORT).show();
             }
         });
+
+        buttonToInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MapsActivity.this, InformationActivity.class));
+            }
+        });
+
     }
 
 
