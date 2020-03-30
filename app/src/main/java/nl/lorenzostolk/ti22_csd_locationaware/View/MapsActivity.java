@@ -56,6 +56,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Place currentCheckPlace;
     private Button buttonToStatistics;
     private Button buttonToDirection;
+    private Button buttonToInfo;
     private Thread locationThread;
 
     //Request code
@@ -267,6 +268,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void initStatistics() {
         buttonToStatistics = findViewById(R.id.map_button_toStatistics);
         buttonToDirection = findViewById(R.id.btnToDirection);
+        buttonToInfo = findViewById(R.id.btnToInfo);
 
         buttonToStatistics.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -281,6 +283,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //                Toast.makeText(MapsActivity.this,"MDAM",Toast.LENGTH_SHORT).show();
             }
         });
+
+        buttonToInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MapsActivity.this, InformationActivity.class));
+            }
+        });
+
     }
 
 

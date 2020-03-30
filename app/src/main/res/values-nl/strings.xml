@@ -9,4 +9,5 @@
     <string name="YearTitle">jaar</string>
     <string name="hoursTotalTitle">uren</string>
     <string name="WeekNumberTitle">week</string>
+    <string name="informationPageText">Met behulp van deze applicatie krijg je meer inzicht in de hoeveel tijd die je doorbrengt op school. De applicatie houdt per week bij hoeveel tijd ge hebt doorgebracht op school. Een overzicht hiervan kan je vinden in de statistieken pagina.  Als je in een week voldoende tijd hebt doorgebracht op school, dan kan je op vrijdag de route naar het gekozen Cafe volgen voor de welverdiende VrijMiBo. Deze route is te volgen op de map.   Voor wijzigingen van Cafe, minimale tijdsbesteding of thema kun je terecht in de instellingen.</string>
 </resources>

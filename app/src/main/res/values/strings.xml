@@ -11,5 +11,6 @@
     <string name="YearTitle">year</string>
     <string name="hoursTotalTitle">hours</string>
     <string name="WeekNumberTitle">week</string>
+    <string name="informationPageText">This application will help you keep track on time spend on school. In statistics you can find a overview of you time spend on school per week.   Did you spend enough time at school this week? Congrats! You can follow a route on the map to a bar for a well deserved drink.   For changes, like a bar change, thema change or minimum time change, you have to visit Settings.</string>
 
 </resources>
