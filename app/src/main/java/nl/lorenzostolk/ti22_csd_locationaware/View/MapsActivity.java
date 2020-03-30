@@ -41,6 +41,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.net.Inet4Address;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -50,8 +51,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private List<Place> avansBuildings;
     private ArrayList<Place> drinkPlaces;
+//    private Place nearestPlace;
+    private Location currentLocation;
+    private Place currentCheckPlace;
     private Button buttonToStatistics;
     private Button buttonToDirection;
+    private Thread locationThread;
 
     //Request code
     final int REQUEST_CODE = 123;
@@ -185,6 +190,44 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if (polyline != null) {
                     updateRouteUI();
                 }
+
+                currentLocation = location;
+
+
+                Place nearestPlace = getNearestPlace(location);
+                double distance = distance(location.getLatitude(), location.getLongitude(), nearestPlace.getLatLng().latitude, nearestPlace.getLatLng().longitude);
+
+
+                if(locationThread == null || distance < 50) {
+                    locationThread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            long lBegin = System.currentTimeMillis();
+                            currentCheckPlace = getNearestPlace(currentLocation);
+                            try {
+                                while(distance(currentLocation.getLatitude(), currentLocation.getLongitude(), currentCheckPlace.getLatLng().latitude, currentCheckPlace.getLatLng().longitude) < 50){
+                                    double d = distance(currentLocation.getLatitude(), currentLocation.getLongitude(), currentCheckPlace.getLatLng().latitude, currentCheckPlace.getLatLng().longitude);
+                                    Log.d("ASTI", ("CurrentDistance = " + d + " on " + currentCheckPlace.getName()));
+                                    locationThread.wait(10);
+                                }
+
+                            } catch (Exception e){
+
+                            } finally {
+                                long lEnd = System.currentTimeMillis();
+
+                                long lDuration = lEnd - lBegin;
+                                //lDuration is the time spend on x place
+                                //x place is currentCheckPlace
+
+                                currentCheckPlace = null;
+                                locationThread = null;
+                            }
+                        }
+                    });
+                    locationThread.start();
+                }
+
 
 //                Toast.makeText(MapsActivity.this,"Location Changed",Toast.LENGTH_SHORT).show();
 
@@ -435,5 +478,40 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onRoutesError(Error error) {
         System.out.println("Error: " + error.toString());
+    }
+
+    private static double distance(double lat1, double lon1, double lat2, double lon2) {
+        if ((lat1 == lat2) && (lon1 == lon2)) {
+            return 0;
+        }
+        else {
+            double theta = lon1 - lon2;
+            double dist = Math.sin(Math.toRadians(lat1)) * Math.sin(Math.toRadians(lat2)) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.cos(Math.toRadians(theta));
+            dist = Math.acos(dist);
+            dist = Math.toDegrees(dist);
+            dist = dist * 60 * 1.1515;
+            dist = dist * 1609.344;
+
+            return (dist);
+        }
+    }
+
+    private Place getNearestPlace(Location location){
+
+        Place nearestPlace = null;
+        double shortestDistance = distance(location.getLatitude(), location.getLongitude(), avansBuildings.get(0).getLatLng().latitude, avansBuildings.get(0).getLatLng().longitude);;
+        for (Place p: avansBuildings) {
+            double d = distance(location.getLatitude(), location.getLongitude(), p.getLatLng().latitude, p.getLatLng().longitude);
+            Log.d("ASTI", ("Distance = " + p.getName() + " : " + d + " M"));
+            if(d < shortestDistance) {
+                shortestDistance = d;
+                nearestPlace = p;
+            }
+        }
+
+        if(nearestPlace != null)
+        Log.d("ASTI", ("NearestPlace = " + nearestPlace.getName() + "\t : " + shortestDistance + " M"));
+
+        return nearestPlace;
     }
 }
