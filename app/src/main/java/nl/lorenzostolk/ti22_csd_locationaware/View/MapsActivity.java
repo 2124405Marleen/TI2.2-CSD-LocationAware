@@ -214,14 +214,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 LocalDateTime lEnd = LocalDateTime.now();
 
                                 //Make WhenWhere object of the visit data
-                                WhenWhere whenWhere;
+                                /*WhenWhere whenWhere;
                                 if(currentCheckPlace.getName().equals("Avans H")|| currentCheckPlace.getName().equals("Avans HQ")) {
                                     whenWhere = new WhenWhere(LocationEnum.HOGESCHOOLLAAN, lBegin, lEnd);
                                 } else {
                                     whenWhere = new WhenWhere(LocationEnum.LOVENSDIJKSTRAAT, lBegin, lEnd);
                                 }
 
-                                whenWhers.add(whenWhere);
+                                whenWhers.add(whenWhere);*/
 
                                 //Reset variable
                                 currentCheckPlace = null;
