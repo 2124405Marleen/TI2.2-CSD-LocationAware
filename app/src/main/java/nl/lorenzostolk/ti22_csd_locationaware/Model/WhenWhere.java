@@ -99,8 +99,7 @@ public class WhenWhere implements Serializable {
         int secondsWhoDidnotFitInMinutes = secondsWhoDidnotFitInHours % 60;
         int minutesSpend = (secondsWhoDidnotFitInHours - secondsWhoDidnotFitInMinutes) / 60;
         int secondsSpend = secondsWhoDidnotFitInMinutes;
-
-        //Zorgen dat er 2 nullen staan bij getallen onder de 10
+        
         String hours = String.format("%02d", hoursSpend);
         String minutes = String.format("%02d", minutesSpend);
         String seconds = String.format("%02d", secondsSpend);
