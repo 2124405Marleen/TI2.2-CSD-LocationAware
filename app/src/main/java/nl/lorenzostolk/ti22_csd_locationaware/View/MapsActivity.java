@@ -1,16 +1,19 @@
 package nl.lorenzostolk.ti22_csd_locationaware.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import nl.lorenzostolk.ti22_csd_locationaware.Controller.MapsDirectionsApiListener;
 import nl.lorenzostolk.ti22_csd_locationaware.Controller.MapsDirectionsApiManager;
+import nl.lorenzostolk.ti22_csd_locationaware.Model.LocationEnum;
 import nl.lorenzostolk.ti22_csd_locationaware.Model.NoContextAvailableException;
 import nl.lorenzostolk.ti22_csd_locationaware.Model.Place;
 import nl.lorenzostolk.ti22_csd_locationaware.Model.Route;
 import nl.lorenzostolk.ti22_csd_locationaware.Model.SPB;
 import nl.lorenzostolk.ti22_csd_locationaware.Model.SQLB;
+import nl.lorenzostolk.ti22_csd_locationaware.Model.WhenWhere;
 import nl.lorenzostolk.ti22_csd_locationaware.R;
 
 import android.Manifest;
@@ -22,6 +25,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -42,6 +46,7 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.net.Inet4Address;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -201,10 +206,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 if(locationThread == null || distance < 50) {
                     locationThread = new Thread(new Runnable() {
+                        @RequiresApi(api = Build.VERSION_CODES.O)
                         @Override
                         public void run() {
-                            long lBegin = System.currentTimeMillis();
+                            //Get Date and Time of arrival
+                            LocalDateTime lBegin = LocalDateTime.now();
+
                             currentCheckPlace = getNearestPlace(currentLocation);
+                            //Check if person is in range of location
                             try {
                                 while(distance(currentLocation.getLatitude(), currentLocation.getLongitude(), currentCheckPlace.getLatLng().latitude, currentCheckPlace.getLatLng().longitude) < 50){
                                     double d = distance(currentLocation.getLatitude(), currentLocation.getLongitude(), currentCheckPlace.getLatLng().latitude, currentCheckPlace.getLatLng().longitude);
@@ -215,12 +224,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             } catch (Exception e){
 
                             } finally {
-                                long lEnd = System.currentTimeMillis();
+                                //Get Date and Time of departure
+                                LocalDateTime lEnd = LocalDateTime.now();
 
-                                long lDuration = lEnd - lBegin;
-                                //lDuration is the time spend on x place
-                                //x place is currentCheckPlace
+                                //TODO: uncomment to use real data:
+                                /*
 
+                                //Make WhenWhere object of the visit data
+                                if(currentCheckPlace.getName() == "H" || currentCheckPlace.getName() == "HQ") {
+                                    new WhenWhere(LocationEnum.HOGESCHOOLLAAN, lBegin, lEnd);
+                                } else {
+                                    new WhenWhere(LocationEnum.LOVENSDIJKSTRAAT, lBegin, lEnd);
+                                }
+                                 */
+                                //Reset variable
                                 currentCheckPlace = null;
                                 locationThread = null;
                             }
