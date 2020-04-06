@@ -71,10 +71,7 @@ public class SPB {
         }
     }
 
-//    public void safePlace(Place place) {
-//
-//    }
-
+    
     public List<Place> getPlaces() {
         List<Place> places = new ArrayList<>();
 

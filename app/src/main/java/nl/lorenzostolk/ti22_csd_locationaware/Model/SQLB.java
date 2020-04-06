@@ -74,26 +74,6 @@ public class SQLB extends SQLiteOpenHelper {
         }
     }
 
-//    public void reset(Context context) {
-//        SQLiteDatabase sqldb = getWritableDatabase();
-//        sqldb.execSQL("DROP TABLE IF EXISTS " + TABLE_PLACES);
-//        context.deleteDatabase(DATABASE_NAME);
-//
-//    }
-
-//    public void addPlace2(Place place) {
-//        ContentValues values = new ContentValues();
-//        values.put(KEY_PLACE_UUID, place.getUuid());
-//        values.put(KEY_PLACE_NAME, place.getName());
-//        values.put(KEY_PLACE_LAT, place.getLatLng().latitude);
-//        values.put(KEY_PLACE_LNG, place.getLatLng().longitude);
-//        values.put(KEY_PLACE_IMAGE_URL, place.getImageURL());
-//        values.put(KEY_PLACE_DESCRIPTION, place.getDescription());
-//
-//        SQLiteDatabase sqldb = this.getWritableDatabase();
-//        sqldb.insert(TABLE_PLACES, null, values);
-//        sqldb.close();
-//    }
 
     public void addOrUpdatePlace(Place place) {
         SQLiteDatabase sqldb = getWritableDatabase();
@@ -125,56 +105,6 @@ public class SQLB extends SQLiteOpenHelper {
             sqldb.close();
         }
     }
-
-//    public void addOrUpdatePlace(Place place) {
-//
-//        SQLiteDatabase sqldb = getWritableDatabase();
-//        long placeId = -1;
-//
-////        sqldb.beginTransaction();
-//        try {
-//            ContentValues values = new ContentValues();
-//            values.put(KEY_PLACE_UUID, place.getUuid());
-//
-//            int rows = sqldb.update(TABLE_PLACES, values, KEY_PLACE_UUID + "= ?", new String[]{place.getUuid()});
-//
-//            if (rows == 1) {
-//                String usersSelectQuery = String.format("SELECT %s FROM %s WHERE %s = ?",
-//                        KEY_PLACE_ID, TABLE_PLACES, KEY_PLACE_UUID);
-//                Cursor cursor = sqldb.rawQuery(usersSelectQuery, new String[]{String.valueOf(place.getUuid())});
-//                try {
-//                    if (cursor.moveToFirst()) {
-//                        placeId = cursor.getInt(0);
-//                        sqldb.setTransactionSuccessful();
-//                    }
-//                } finally {
-//                    if (cursor != null && !cursor.isClosed()) {
-//                        cursor.close();
-//                    }
-//                }
-//            } else {
-//                //place with this UUID did not already exist, so insert new place
-//                placeId = sqldb.insertOrThrow(TABLE_PLACES, null, values);
-//                sqldb.setTransactionSuccessful();
-//            }
-//        } catch (Exception e) {
-//            Log.d("SQLITE ERROR", "Error while trying to add or update user");
-//        } finally {
-//            sqldb.endTransaction();
-//        }
-//    }
-
-//    public void getAll() {
-//        SQLiteDatabase sqldb = getReadableDatabase();
-//        Cursor cursor = sqldb.query(TABLE_PLACES,
-//                new String[]{"*"},
-//                null, null, null, null, null + " DESC");
-//        if (cursor.moveToFirst()) {
-//            String s = cursor.getString(cursor.getColumnIndex(KEY_PLACE_NAME));
-//            Log.d("99999999", s);
-//        }
-//        cursor.close();
-//    }
 
     // Get all posts in the database
     public List<Place> getAllPlaces() {
