@@ -60,31 +60,31 @@ public class WhenWhere implements Serializable {
     public String getTimeSpend() {
         int totalSecondsSpend = 0;
         if(arrival.getDayOfYear() == departure.getDayOfYear()) {
-            //Berekenen van het aantal seconden van aankomst tijd en vertrek tijd
+            //Calculate seconds of arrival
             int totalSecondsArrival = (arrival.getHour() * 3600) + (arrival.getMinute() * 60)
                     + (arrival.getSecond());
             int totalSecondsDeparture = (departure.getHour() * 3600) + (departure.getMinute() * 60)
                     + (departure.getSecond());
-            //Berekenen totale verblijf tijd
+            //Calculate total time visit
             totalSecondsSpend = totalSecondsDeparture - totalSecondsArrival;
 
         } else if(departure.getDayOfYear() - arrival.getDayOfYear() >= 2){
-            //Verblijf van meerdere dagen
+            //Visit of more days in a row
             int daysStayLeft = departure.getDayOfYear() -arrival.getDayOfYear();
-            //berekenen hoeveel minuten op dag 1
+            //Calculate minutes in a day
             int secondesTillMidnightDayOne = 86400 - ((arrival.getHour()*3600)
                     + (arrival.getMinute()*60) + arrival.getSecond());
             totalSecondsSpend = secondesTillMidnightDayOne;
             if(daysStayLeft > 1){
-                //86400 seconden per volle dag
+                //86400 seconds in 24 full hours
                 totalSecondsSpend = totalSecondsSpend + 86400;
             }
-            //Aantal seconden laatste dag
+            //Calculate seconds last day of visit
             int secondesFromMidnightTillDeparture = ((departure.getHour()*3600)
                     + (departure.getMinute()*60) + departure.getSecond());
             totalSecondsSpend = totalSecondsSpend + secondesFromMidnightTillDeparture;
         } else {
-            //Verblijf met 1 nacht
+            //Visit with one night
             int secondesTillMidnightArrival = 86400 - ((arrival.getHour()*3600)
                     + (arrival.getMinute()*60) + arrival.getSecond());
             int secondesAfterMidnightTillDeparture = ((departure.getHour()*3600)
@@ -93,7 +93,7 @@ public class WhenWhere implements Serializable {
         }
 
         this.totalSecondsSpendDuringStay = totalSecondsSpend;
-        //Omrekenen voor de tekstuitvoer
+        //Format time for output
         int secondsWhoDidnotFitInHours = totalSecondsSpend % 3600;
         int hoursSpend = (totalSecondsSpend - secondsWhoDidnotFitInHours) / 3600;
         int secondsWhoDidnotFitInMinutes = secondsWhoDidnotFitInHours % 60;
