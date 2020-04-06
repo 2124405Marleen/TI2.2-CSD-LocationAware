@@ -44,6 +44,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.model.CircleOptions;
 
 import java.net.Inet4Address;
 import java.time.LocalDateTime;
@@ -90,16 +91,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Route currentRoute;
     private SQLB sqlb;
 
-//    @Override
-//    public void onProviderEnabled(String provider) {
-//        Log.d("MyClima", "locationListener: OnProviderEnabled()");
-//    }
-//
-//    @Override
-//    public void onProviderDisabled(String provider) {
-//        Log.d("MyClima", "locationListener: OnProviderDisabled()");
-//    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,7 +128,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void getPermissions() {
-//        Toast.makeText(this,"TEST2222",Toast.LENGTH_SHORT).show();
         if (ContextCompat.checkSelfPermission(this, PERMISSION_STRING) != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
@@ -145,8 +135,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         locationManager.requestLocationUpdates(LOCATION_PROVIDER, MIN_TIME, MIN_DISTANCE, locationListener);
-//        Toast.makeText(this, "RequestLocationUpdates Set", Toast.LENGTH_SHORT).show();
-//        Toast.makeText(this, "Location provider: " + LOCATION_PROVIDER, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -182,7 +170,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         markerOptions.title("Current Position");
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
         mCurrLocation = mMap.addMarker(markerOptions);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15.5f));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15.5f));
     }
 
     private void setupLocationServices() {
@@ -199,10 +187,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 currentLocation = location;
 
-
                 Place nearestPlace = getNearestPlace(location);
                 double distance = distance(location.getLatitude(), location.getLongitude(), nearestPlace.getLatLng().latitude, nearestPlace.getLatLng().longitude);
-
 
                 if(locationThread == null || distance < 50) {
                     locationThread = new Thread(new Runnable() {
@@ -227,16 +213,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 //Get Date and Time of departure
                                 LocalDateTime lEnd = LocalDateTime.now();
 
-                                //TODO: uncomment to use real data:
-                                /*
-
                                 //Make WhenWhere object of the visit data
-                                if(currentCheckPlace.getName() == "H" || currentCheckPlace.getName() == "HQ") {
+                                if(currentCheckPlace.getName().equals("Avans H")|| currentCheckPlace.getName().equals("Avans HQ")) {
                                     new WhenWhere(LocationEnum.HOGESCHOOLLAAN, lBegin, lEnd);
                                 } else {
                                     new WhenWhere(LocationEnum.LOVENSDIJKSTRAAT, lBegin, lEnd);
                                 }
-                                 */
+
                                 //Reset variable
                                 currentCheckPlace = null;
                                 locationThread = null;
@@ -296,7 +279,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         buttonToDirection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MDAM.getDirectionRoutes(currentLatLng, new LatLng(51.590270, 4.764140));
+                //Location Havermarkt
+                LatLng barLatLng = new LatLng(51.589344, 4.774147);
+                MDAM.getDirectionRoutes(currentLatLng, barLatLng);
 //                Toast.makeText(MapsActivity.this,"MDAM",Toast.LENGTH_SHORT).show();
             }
         });
@@ -324,13 +309,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-//        LatLng sydney = new LatLng(-34, 151);
-//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-
-//        mMap.setMyLocationEnabled(true);
-
         mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
             @Override
             public void onMapLoaded() {
@@ -352,8 +330,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Toast.makeText(MapsActivity.this, "Last known location is \n" + i, Toast.LENGTH_SHORT).show();
                     updateLocationMarker(lastlocation);
                 }
-
-
             }
         });
 
@@ -411,8 +387,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Log.d("-------------Places", p.toString());
             mMap.addMarker(new MarkerOptions().position(p.getLatLng()).title(p.getDescription()));
 //            System.out.println("SQLite: ID= " + p.getID() + " |name= " + p.getName() + " |latlng= " + p.getLatLng());
-        }
 
+            CircleOptions circleOptions = new CircleOptions();
+            circleOptions.center(p.getLatLng());
+            circleOptions.radius(50);
+            circleOptions.strokeColor(Color.RED);
+            circleOptions.fillColor(0x30ff0000);
+            circleOptions.strokeWidth(2);
+
+            mMap.addCircle(circleOptions);
+        }
     }
 
 
