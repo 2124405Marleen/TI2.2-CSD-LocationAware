@@ -71,7 +71,7 @@ public class SPB {
         }
     }
 
-    
+
     public List<Place> getPlaces() {
         List<Place> places = new ArrayList<>();
 

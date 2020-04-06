@@ -65,6 +65,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Button buttonToInfo;
     private Thread locationThread;
 
+    // Week
+    ArrayList<WhenWhere> whenWhers;
     //Request code
     final int REQUEST_CODE = 123;
     final long MIN_TIME = 2500;
@@ -95,6 +97,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        whenWhers = new ArrayList();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -145,9 +148,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Log.d("ASTI", "onRequestPermissionsResult granted!");
                 Toast.makeText(this, "PERMISSION_GRANTED", Toast.LENGTH_SHORT).show();
-//                updateLocationMarker();
                 Toast.makeText(this, "Location Changed", Toast.LENGTH_SHORT).show();
-//                updateLocationMarker(initLastlocation);
 
             } else {
                 Log.d("ASTI", "onRequestPermissionsResult NOT granted!");
@@ -170,7 +171,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         markerOptions.title("Current Position");
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
         mCurrLocation = mMap.addMarker(markerOptions);
-        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15.5f));
     }
 
     private void setupLocationServices() {
@@ -214,11 +214,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 LocalDateTime lEnd = LocalDateTime.now();
 
                                 //Make WhenWhere object of the visit data
+                                WhenWhere whenWhere;
                                 if(currentCheckPlace.getName().equals("Avans H")|| currentCheckPlace.getName().equals("Avans HQ")) {
-                                    new WhenWhere(LocationEnum.HOGESCHOOLLAAN, lBegin, lEnd);
+                                    whenWhere = new WhenWhere(LocationEnum.HOGESCHOOLLAAN, lBegin, lEnd);
                                 } else {
-                                    new WhenWhere(LocationEnum.LOVENSDIJKSTRAAT, lBegin, lEnd);
+                                    whenWhere = new WhenWhere(LocationEnum.LOVENSDIJKSTRAAT, lBegin, lEnd);
                                 }
+
+                                whenWhers.add(whenWhere);
 
                                 //Reset variable
                                 currentCheckPlace = null;
@@ -230,7 +233,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
 
 
-//                Toast.makeText(MapsActivity.this,"Location Changed",Toast.LENGTH_SHORT).show();
 
             }
 
@@ -282,7 +284,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 //Location Havermarkt
                 LatLng barLatLng = new LatLng(51.589344, 4.774147);
                 MDAM.getDirectionRoutes(currentLatLng, barLatLng);
-//                Toast.makeText(MapsActivity.this,"MDAM",Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -322,11 +323,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if (locationManager.getLastKnownLocation(LOCATION_PROVIDER) == null) {
                     Toast.makeText(MapsActivity.this, "Last known location is unknown", Toast.LENGTH_SHORT).show();
                 } else {
-//                    Toast.makeText(MapsActivity.this, "LOCATION_PROVIDER is: " + LOCATION_PROVIDER, Toast.LENGTH_SHORT).show();
 
                     Location lastlocation = locationManager.getLastKnownLocation(LOCATION_PROVIDER);
                     String i = lastlocation.getLatitude() + "" + lastlocation.getLongitude();
-//                    Toast.makeText(MapsActivity.this, i, Toast.LENGTH_SHORT).show();
                     Toast.makeText(MapsActivity.this, "Last known location is \n" + i, Toast.LENGTH_SHORT).show();
                     updateLocationMarker(lastlocation);
                 }
@@ -407,7 +406,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         LatLng origin = new LatLng(51.589320, 4.774480);
         LatLng destination = new LatLng(51.590270, 4.764140);
-//        LatLng dest = markerPoints.get(1);
+
 
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         LatLngBounds bounds = builder.include(origin).include(destination).build();
@@ -439,12 +438,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (lineOptions != null) {
             if (polyline != null) {
                 polyline.remove();
-//                lineOptions.color(Color.RED);
                 polyline = this.mMap.addPolyline(lineOptions);
             } else {
                 polyline = this.mMap.addPolyline(lineOptions);
             }
-//            mMap.addPolyline(lineOptions);
+
 
 
             // zoom to bounding-box of the route:
